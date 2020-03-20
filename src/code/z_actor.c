@@ -167,7 +167,9 @@ GLOBAL_ASM("asm/non_matchings/z_actor//func_800B6434.asm")
 
 GLOBAL_ASM("asm/non_matchings/z_actor//func_800B645C.asm")
 
-GLOBAL_ASM("asm/non_matchings/z_actor//func_800B6468.asm")
+void func_800B6468(GlobalContext* ctxt) {
+    ctxt->actorCtx.unk1F5 = 0;
+}
 
 GLOBAL_ASM("asm/non_matchings/z_actor//func_800B6474.asm")
 
@@ -595,7 +597,14 @@ void Actor_DrawAllSetup(GlobalContext* ctxt) {
     ctxt->actorCtx.unkB = 0;
 }
 
-GLOBAL_ASM("asm/non_matchings/z_actor//Actor_RecordUndrawnActor.asm")
+s32 Actor_RecordUndrawnActor(GlobalContext* ctxt, Actor* actor) {
+    if (ctxt->actorCtx.undrawnActorCount >= 0x20) {
+        return 0;
+    }
+    ctxt->actorCtx.undrawnActors[ctxt->actorCtx.undrawnActorCount] = actor;
+    ctxt->actorCtx.undrawnActorCount++;
+    return 1;
+}
 
 GLOBAL_ASM("asm/non_matchings/z_actor//func_800B9E84.asm")
 
@@ -639,13 +648,17 @@ void Actor_FreeOverlay(ActorOverlay* entry) {
     }
 }
 
-GLOBAL_ASM("asm/non_matchings/z_actor//Actor_Spawn.asm")
+Actor* Actor_Spawn(ActorContext* actCtxt, GlobalContext* ctxt, s16 index, f32 x, f32 y, f32 z, s16 rotX, s16 rotY, s16 rotZ, s32 sParm10) {
+    return Actor_SpawnWithParentAndCutscene(actCtxt, ctxt, index, x, y, z, rotX, rotY, rotZ, sParm10, -1, 0x3FF, 0);
+}
 
 GLOBAL_ASM("asm/non_matchings/z_actor//Actor_LoadOverlay.asm")
 
 GLOBAL_ASM("asm/non_matchings/z_actor//Actor_SpawnWithParentAndCutscene.asm")
 
-GLOBAL_ASM("asm/non_matchings/z_actor//Actor_SpawnWithParent.asm")
+Actor* Actor_SpawnWithParent(ActorContext* actCtxt, Actor* parent, GlobalContext* ctxt, s16 index, f32 x, f32 y, f32 z, s16 rotX, s16 rotY, s16 rotZ, s32 variable) {
+    return Actor_SpawnWithParentAndCutscene(actCtxt, ctxt, index, x, y, z, rotX, rotY, rotZ, variable, -1, parent->unk20, parent);
+}
 
 GLOBAL_ASM("asm/non_matchings/z_actor//Actor_SpawnTransitionActors.asm")
 

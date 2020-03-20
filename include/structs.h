@@ -2576,7 +2576,7 @@ struct Actor {
 /* 0x01C */ s16 params;
 /* 0x01E */ s8 objBankIndex;
 /* 0x01F */ UNK_TYPE1 unk1F;
-/* 0x020 */ u16 unk20;
+/* 0x020 */ s16 unk20;
 /* 0x022 */ u16 unk22;
 /* 0x024 */ PosRot currPosRot;
 /* 0x038 */ s8 cutscene;
